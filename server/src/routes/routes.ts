@@ -25,14 +25,10 @@ router.post('/generate', async (req: Request<object, object, GenerateBody>, res:
       return;
     }
 
-    let result;
-
-    if (end && Array.isArray(end) && end.length === 2) {
-      result = await generatePointToPointRoute(start, end, surface, mode);
-    } else {
-      result = await generateLoopRoute(start, distance, surface, mode);
-    }
-
+    const result =
+      end && Array.isArray(end) && end.length === 2
+        ? await generatePointToPointRoute(start, end, surface, mode)
+        : await generateLoopRoute(start, distance, surface, mode);
     res.json(result);
   } catch (error) {
     console.error('Route generation error:', error);
