@@ -16,8 +16,10 @@ export default function RouteInfo({ route }: Props) {
     if (distanceMiles === 0) return '--';
     const paceMin = durationMinutes / distanceMiles;
     const mins = Math.floor(paceMin);
-    const secs = Math.round((paceMin - mins) * 60);
-    return `${mins}:${secs.toString().padStart(2, '0')} /mi`;
+    const roundedSecs = Math.round((paceMin - mins) * 60);
+    const displayMins = mins + Math.floor(roundedSecs / 60);
+    const secs = roundedSecs % 60;
+    return `${displayMins}:${secs.toString().padStart(2, '0')} /mi`;
   };
 
   return (
