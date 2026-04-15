@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import type { SurfacePreference, RouteMode } from '../types';
 
 interface Props {
@@ -28,7 +29,7 @@ export default function RouteForm({
   const [surface, setSurface] = useState<SurfacePreference>('mixed');
   const [mode, setMode] = useState<RouteMode>('random');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onGenerate(distance, surface, mode);
   };
