@@ -15,7 +15,15 @@ router.post('/generate', async (req: Request<object, object, GenerateBody>, res:
   try {
     const { start, end, distance, surface, mode } = req.body;
 
-    if (!start || !Array.isArray(start) || start.length !== 2) {
+    if (
+      !start ||
+      !Array.isArray(start) ||
+      start.length !== 2 ||
+      !Number.isFinite(start[0]) ||
+      !Number.isFinite(start[1]) ||
+      start[0] < -180 || start[0] > 180 ||
+      start[1] < -90 || start[1] > 90
+    ) {
       res.status(400).json({ message: 'Invalid start coordinates' });
       return;
     }

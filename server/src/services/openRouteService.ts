@@ -156,7 +156,7 @@ export async function generatePointToPointRoute(
   };
 
   if (mode === 'scenic') {
-    // For scenic mode, request alternative routes and prefer the longer/more varied one
+    // For scenic mode, request alternative routes and select the longest/most varied one
     body.alternative_routes = {
       target_count: 3,
       weight_factor: 1.6,
@@ -186,11 +186,12 @@ export async function generatePointToPointRoute(
 
   const data = await response.json() as ORSResponse;
 
-  // For scenic mode, pick a random alternative route if available
+  // For scenic mode, pick the longest alternative route if available
   let feature: ORSFeature | undefined;
   if (mode === 'scenic' && data.features?.length > 1) {
-    const idx = Math.floor(Math.random() * data.features.length);
-    feature = data.features[idx];
+    feature = data.features.reduce((longest, current) =>
+      current.properties.summary.distance > longest.properties.summary.distance ? current : longest
+    );
   } else {
     feature = data.features?.[0];
   }
